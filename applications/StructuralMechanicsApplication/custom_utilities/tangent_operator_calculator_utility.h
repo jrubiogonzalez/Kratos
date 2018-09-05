@@ -51,7 +51,10 @@ namespace Kratos
  */
 class KRATOS_API(STRUCTURAL_MECHANICS_APPLICATION) TangentOperatorCalculatorUtility
 {
-  public:
+public:
+    ///@name Type Definitions
+    ///@{
+
     /// Pointer definition of TangentOperatorCalculatorUtility
     KRATOS_CLASS_POINTER_DEFINITION(TangentOperatorCalculatorUtility);
 
@@ -65,6 +68,10 @@ class KRATOS_API(STRUCTURAL_MECHANICS_APPLICATION) TangentOperatorCalculatorUtil
     // Definition of the perturbation threshold
     static constexpr double PerturbationThreshold = 1.0e-8;
 
+    ///@}
+    ///@name Life Cycle
+    ///@{
+
     /// Constructor
     TangentOperatorCalculatorUtility()
     {
@@ -72,6 +79,14 @@ class KRATOS_API(STRUCTURAL_MECHANICS_APPLICATION) TangentOperatorCalculatorUtil
 
     /// Destructor.
     virtual ~TangentOperatorCalculatorUtility() {}
+
+    ///@}
+    ///@name Operators
+    ///@{
+
+    ///@}
+    ///@name Operations
+    ///@{
 
     /**
      * @brief Main method that computes the tangent tensor
