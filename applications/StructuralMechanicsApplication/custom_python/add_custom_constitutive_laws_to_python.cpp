@@ -17,6 +17,7 @@
 // Project includes
 #include "custom_python/add_custom_constitutive_laws_to_python.h"
 
+#include "custom_constitutive/debugging_constitutive_law.h"
 #include "custom_constitutive/truss_constitutive_law.h"
 #include "custom_constitutive/truss_plasticity_constitutive_law.h"
 #include "custom_constitutive/beam_constitutive_law.h"
@@ -54,6 +55,10 @@ using namespace pybind11;
 
 void  AddCustomConstitutiveLawsToPython(pybind11::module& m)
 {
+
+    class_< DebuggingConstitutiveLaw, typename DebuggingConstitutiveLaw::Pointer, ConstitutiveLaw >
+    (m, "DebuggingConstitutiveLaw").def(init<>() )
+    ;
 
     class_< TrussConstitutiveLaw, typename TrussConstitutiveLaw::Pointer, ConstitutiveLaw >
     (m, "TrussConstitutiveLaw").def(init<>() )
