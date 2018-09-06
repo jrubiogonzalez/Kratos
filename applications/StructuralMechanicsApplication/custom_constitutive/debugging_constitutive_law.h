@@ -777,6 +777,38 @@ public:
         const Vector& GreenLagrangeStrainVector
         ) override;
 
+    ///@}
+    ///@}
+    ///@name Inquiry
+    ///@{
+    ///@}
+    ///@name Input and output
+    ///@{
+
+    /// Turn back information as a string.
+    std::string Info() const override
+    {
+        std::stringstream buffer;
+        buffer << "DebuggingConstitutiveLaw debugs the following law" << mpRealConstitutiveLaw->Info();
+        return buffer.str();
+    }
+
+    /// Print information about this object.
+    void PrintInfo(std::ostream& rOStream) const override
+    {
+        rOStream << "DebuggingConstitutiveLaw debugs the following law" << mpRealConstitutiveLaw->Info();
+    }
+
+    /// Print object's data.
+    void PrintData(std::ostream& rOStream) const override
+    {
+        rOStream << "DebuggingConstitutiveLaw debugs the following law" << mpRealConstitutiveLaw->Info();
+    }
+
+    ///@}
+    ///@name Friends
+    ///@{
+    ///@}
 protected:
 
     ///@name Protected static Member Variables
