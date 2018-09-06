@@ -187,6 +187,11 @@ void KratosStructuralMechanicsApplication::Register() {
     // General pourpose
     KRATOS_REGISTER_VARIABLE(INTEGRATION_ORDER); // The integration order considered on the element
 
+    // Debugging variables
+    KRATOS_REGISTER_VARIABLE(DEBUGGING_LEVEL);               // The debugging level considered
+    KRATOS_REGISTER_VARIABLE(INTEGRATION_GAUSS_POINT_INDEX); // The integration point index
+    KRATOS_REGISTER_VARIABLE(OWNER_ELEMENT_ID);              // The element owner id
+
     // Generalized eigenvalue problem
     KRATOS_REGISTER_VARIABLE(BUILD_LEVEL)
     KRATOS_REGISTER_VARIABLE(EIGENVALUE_VECTOR)

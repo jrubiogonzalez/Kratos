@@ -18,6 +18,11 @@ typedef std::size_t IndexType;
 // General pourpose
 KRATOS_CREATE_VARIABLE(int, INTEGRATION_ORDER); // The integration order considered on the element
 
+// Debugging variables
+KRATOS_CREATE_VARIABLE(int, DEBUGGING_LEVEL);               // The debugging level considered
+KRATOS_CREATE_VARIABLE(int, INTEGRATION_GAUSS_POINT_INDEX); // The integration point index
+KRATOS_CREATE_VARIABLE(int, OWNER_ELEMENT_ID);              // The element owner id
+
 // Generalized eigenvalue problem
 KRATOS_CREATE_VARIABLE(int, BUILD_LEVEL)
 KRATOS_CREATE_VARIABLE(Vector, EIGENVALUE_VECTOR)
