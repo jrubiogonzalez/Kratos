@@ -145,6 +145,11 @@ void BaseSolidElement::InitializeMaterial()
             GetGeometry(),
             row( GetGeometry().ShapeFunctionsValues(  ), point_number )
             );
+
+        #ifdef KRATOS_DEBUG
+            mConstitutiveLawVector[point_number]->SetValue(INTEGRATION_GAUSS_POINT_INDEX, point_number);
+            mConstitutiveLawVector[point_number]->SetValue(OWNER_ELEMENT_ID, this->Id());
+        #endif
         }
     } else
         KRATOS_ERROR << "A constitutive law needs to be specified for the element with ID " << this->Id() << std::endl;
