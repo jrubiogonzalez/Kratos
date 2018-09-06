@@ -80,8 +80,10 @@ void BaseSolidElement::InitializeSolutionStep( ProcessInfo& rCurrentProcessInfo 
         );
 
     #ifdef KRATOS_DEBUG
-        mConstitutiveLawVector[point_number]->SetValue(INTEGRATION_GAUSS_POINT_INDEX, point_number, rCurrentProcessInfo);
-        mConstitutiveLawVector[point_number]->SetValue(OWNER_ELEMENT_ID, this->Id(), rCurrentProcessInfo);
+        if (mConstitutiveLawVector[point_number]->Has(INTEGRATION_GAUSS_POINT_INDEX))
+            mConstitutiveLawVector[point_number]->SetValue(INTEGRATION_GAUSS_POINT_INDEX, point_number, rCurrentProcessInfo);
+        if (mConstitutiveLawVector[point_number]->Has(OWNER_ELEMENT_ID))
+            mConstitutiveLawVector[point_number]->SetValue(OWNER_ELEMENT_ID, this->Id(), rCurrentProcessInfo);
     #endif
     }
 }
