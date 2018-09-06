@@ -16,6 +16,7 @@
 // Project includes
 #include "includes/properties.h"
 #include "custom_constitutive/debugging_constitutive_law.h"
+#include "structural_mechanics_application_variables.h"
 
 namespace Kratos
 {
@@ -34,13 +35,7 @@ DebuggingConstitutiveLaw::DebuggingConstitutiveLaw()
 DebuggingConstitutiveLaw::DebuggingConstitutiveLaw(Kratos::Parameters NewParameters)
     : ConstitutiveLaw()
 {
-    Kratos::Parameters default_parameters = Kratos::Parameters(R"(
-    {
-        "name"                      : "DebuggingConstitutiveLaw",
-        "constitutive_law_to_debug" : ""
-    })" );
-
-    mThisParameters.ValidateAndAssignDefaults(default_parameters);
+    KRATOS_ERROR_IF_NOT(NewParameters.Has("constitutive_law_to_debug")) << "This constitutive law requires the definition of constitutive_law_to_debug" << std::endl;
 
     const std::string& constitutive_law_to_debug = NewParameters["constitutive_law_to_debug"].GetString();
     mpRealConstitutiveLaw = KratosComponents<ConstitutiveLaw>::Get(constitutive_law_to_debug).Clone();
@@ -125,8 +120,14 @@ bool DebuggingConstitutiveLaw::Has(const Variable<int>& rThisVariable)
 {
     KRATOS_TRY;
 
-    // We call to the real CL
-    return mpRealConstitutiveLaw->Has(rThisVariable);
+    if (rThisVariable == INTEGRATION_GAUSS_POINT_INDEX) {
+        return mThisParameters.Has("gp_id");
+    } else if (rThisVariable == OWNER_ELEMENT_ID) {
+        return mThisParameters.Has("element_id");
+    } else {
+        // We call to the real CL
+        return mpRealConstitutiveLaw->Has(rThisVariable);
+    }
 
     KRATOS_CATCH(GetCatchMessage());
 }
@@ -222,8 +223,16 @@ int& DebuggingConstitutiveLaw::GetValue(
 {
     KRATOS_TRY;
 
-    // We call to the real CL
-    return mpRealConstitutiveLaw->GetValue(rThisVariable, rValue);
+    if (rThisVariable == INTEGRATION_GAUSS_POINT_INDEX) {
+        rValue = mThisParameters["gp_id"].GetInt();
+        return rValue;
+    } else if (rThisVariable == OWNER_ELEMENT_ID) {
+        rValue = mThisParameters["element_id"].GetInt();
+        return rValue;
+    } else {
+        // We call to the real CL
+        return mpRealConstitutiveLaw->GetValue(rThisVariable, rValue);
+    }
 
     KRATOS_CATCH(GetCatchMessage());
 }
@@ -336,8 +345,26 @@ void DebuggingConstitutiveLaw::SetValue(
 {
     KRATOS_TRY;
 
-    // We call to the real CL
-    mpRealConstitutiveLaw->SetValue(rThisVariable, rValue, rCurrentProcessInfo);
+    if (rThisVariable == INTEGRATION_GAUSS_POINT_INDEX) {
+        if (mThisParameters.Has("gp_id")) {
+            mThisParameters["gp_id"].SetInt(rValue);
+        } else {
+            Kratos::Parameters dummy_parameters = Kratos::Parameters(R"({"dummy_parameter" : 0})");
+            mThisParameters.AddValue("gp_id", dummy_parameters);
+            mThisParameters["gp_id"].SetInt(rValue);
+        }
+    } else if (rThisVariable == OWNER_ELEMENT_ID) {
+        if (mThisParameters.Has("element_id")) {
+            mThisParameters["element_id"].SetInt(rValue);
+        } else {
+            Kratos::Parameters dummy_parameters = Kratos::Parameters(R"({"dummy_parameter" : 0})");
+            mThisParameters.AddValue("element_id", dummy_parameters);
+            mThisParameters["element_id"].SetInt(rValue);
+        }
+    } else {
+        // We call to the real CL
+        mpRealConstitutiveLaw->SetValue(rThisVariable, rValue, rCurrentProcessInfo);
+    }
 
     KRATOS_CATCH(GetCatchMessage());
 }
