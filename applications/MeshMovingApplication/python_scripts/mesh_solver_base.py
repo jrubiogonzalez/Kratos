@@ -64,7 +64,7 @@ class MeshSolverBase(PythonSolver):
             "reform_dofs_each_step"     : false,
             "compute_reactions"         : false,
             "calculate_mesh_velocities" : true,
-            "time_scheme" : "bossak",
+            "time_scheme" : "bdf2",
             "alpha":-0.3
         }""")
 
