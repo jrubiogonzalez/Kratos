@@ -27,6 +27,7 @@ class ALEFluidSolver(PythonSolver):
 
         ## Creating the fluid solver
         self.fluid_solver = self._CreateFluidSolver(solver_settings, parallelism)
+        self.is_printing_rank = self.fluid_solver._IsPrintingRank() # temp until Logger supports MPI
 
         ## Creating the mesh-motion solver
         if not mesh_motion_solver_settings.Has("echo_level"):
@@ -129,8 +130,6 @@ class ALEFluidSolver(PythonSolver):
         # and assigning it to the fluid_solver, bcs this one handles the model_part
         self.fluid_solver.min_buffer_size = max(self.fluid_solver.GetMinimumBufferSize(),
                                                 self.mesh_motion_solver.GetMinimumBufferSize())
-
-        self.is_printing_rank = self.fluid_solver._IsPrintingRank()
 
         # TODO move to "Check"?
         if (self.mesh_motion_solver.settings["calculate_mesh_velocities"].GetBool() == False
