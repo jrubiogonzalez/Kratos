@@ -35,7 +35,9 @@ void CheckJacobianDimension(GeometryType::JacobiansType &rInvJ0,
                             VectorType &rDetJ0, GeometryType &rGeometry);
 
 void CalculateMeshVelocities(ModelPart &rMeshModelPart,
-                             const int TimeOrder, const double DeltaTime);
+                             const std::string& rTimeScheme,
+                             const double Alpha,
+                             const double DeltaTime);
 
 void CalculateMeshVelocities(ModelPart* pMeshModelPart,
                              const std::string& rTimeScheme,
