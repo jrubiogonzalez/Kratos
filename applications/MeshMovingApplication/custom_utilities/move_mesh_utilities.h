@@ -38,7 +38,9 @@ void CalculateMeshVelocities(ModelPart &rMeshModelPart,
                              const int TimeOrder, const double DeltaTime);
 
 void CalculateMeshVelocities(ModelPart* pMeshModelPart,
-                             const int TimeOrder, const double DeltaTime);
+                             const std::string& rTimeScheme,
+                             const double Alpha,
+                             const double DeltaTime);
 
 void MoveMesh(const ModelPart::NodesContainerType &rNodes);
 

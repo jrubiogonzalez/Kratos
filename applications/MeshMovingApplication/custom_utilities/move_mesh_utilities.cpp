@@ -50,14 +50,16 @@ void CalculateMeshVelocities(ModelPart* pMeshModelPart,
 }
 
 void CalculateMeshVelocities(ModelPart &rMeshModelPart,
-                             const int TimeOrder, const double DeltaTime) {
+                             const std::string& rTimeScheme,
+                             const double Alpha,
+                             const double DeltaTime) {
   KRATOS_TRY;
 
   KRATOS_ERROR_IF(DeltaTime <= 0.0) << "Invalid DELTA_TIME." << std::endl;
 
   const double coeff = 1 / DeltaTime;
 
-  if (TimeOrder == 1) {
+  if (rTimeScheme == "bdf1") {
     for (ModelPart::NodeIterator i =
              rMeshModelPart.GetCommunicator().LocalMesh().NodesBegin();
          i != rMeshModelPart.GetCommunicator().LocalMesh().NodesEnd(); ++i) {
@@ -71,8 +73,8 @@ void CalculateMeshVelocities(ModelPart &rMeshModelPart,
       noalias(mesh_v) = disp - dispold;
       mesh_v *= coeff;
     }
-  } else if (TimeOrder == 2) {
-    /*
+  }
+  else if (rTimeScheme == "bdf2") {
     const double c1 = 1.50 * coeff;
     const double c2 = -2.0 * coeff;
     const double c3 = 0.50 * coeff;
@@ -92,7 +94,7 @@ void CalculateMeshVelocities(ModelPart &rMeshModelPart,
     rMeshModelPart.GetCommunicator().SynchronizeVariable(MESH_VELOCITY);
     std::cout<<"MESH_VELOCITY by BDF2"<<std::endl;
   }
-   */
+  else if (rTimeScheme == "bossak") {
     for (ModelPart::NodeIterator i =
              rMeshModelPart.GetCommunicator().LocalMesh().NodesBegin();
          i != rMeshModelPart.GetCommunicator().LocalMesh().NodesEnd(); ++i) {
@@ -104,7 +106,7 @@ void CalculateMeshVelocities(ModelPart &rMeshModelPart,
     array_1d<double, 3>& vmesh_n1 = (i)->FastGetSolutionStepValue(MESH_VELOCITY);
     array_1d<double, 3>& amesh_n1 = (i)->FastGetSolutionStepValue(MESH_ACCELERATION);
 
-
+    // TODO use the input parameter "Alpha"
     double alpha_m = -0.30;
     const double alpha_f = 0.0;
     const double beta = 0.25;
