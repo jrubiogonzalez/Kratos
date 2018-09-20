@@ -65,7 +65,7 @@ class MeshSolverBase(PythonSolver):
             "compute_reactions"         : false,
             "calculate_mesh_velocities" : true,
             "time_scheme" : "bossak",
-            "time_order" : 2
+            "alpha":-0.3
         }""")
 
         self.settings.ValidateAndAssignDefaults(default_settings)
@@ -144,13 +144,13 @@ class MeshSolverBase(PythonSolver):
         self.get_mesh_motion_solving_strategy().Check()
 
     def GetMinimumBufferSize(self):
-        time_order = self.settings["time_order"].GetInt()
-        if time_order == 1:
+        time_scheme = self.settings["time_scheme"].GetString()
+        if time_scheme == "bdf1" or time_scheme == "bossak":
             buffer_size = 2
-        elif time_order == 2:
+        elif time_scheme == "bdf2":
             buffer_size = 3
         else:
-            raise Exception('"time_order" can only be 1 or 2!')
+            raise Exception('"time_scheme" can only be "bossak", "bdf1" or "bdf2"!')
         return max(buffer_size, self.settings["buffer_size"].GetInt())
 
     def MoveMesh(self):
