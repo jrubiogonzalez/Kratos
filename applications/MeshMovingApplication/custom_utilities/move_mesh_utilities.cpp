@@ -74,6 +74,8 @@ void CalculateMeshVelocities(ModelPart &rMeshModelPart,
           (i)->FastGetSolutionStepValue(MESH_DISPLACEMENT, 1);
       noalias(mesh_v) = disp - dispold;
       mesh_v *= coeff;
+    rMeshModelPart.GetCommunicator().SynchronizeVariable(MESH_VELOCITY);
+    std::cout<<"MESH_VELOCITY by BDF1"<<std::endl;
     }
   }
   else if (rTimeScheme == "bdf2") {
