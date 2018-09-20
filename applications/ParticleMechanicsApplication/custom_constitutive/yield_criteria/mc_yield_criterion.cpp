@@ -7,8 +7,9 @@
 //  License:		BSD License
 //					Kratos default license: kratos/license.txt
 //
-//  Main authors:    Ilaria Iaconeta
+//  Main authors:    Ilaria Iaconeta, Bodhinanda Chandra
 //
+
 
 // System includes
 #include <string>
@@ -22,8 +23,6 @@
 #include "particle_mechanics_application.h"
 #include "utilities/math_utils.h"
 
-// ROUNDED MohrCoulomb YIELD CRITERION (Sloan & Booker, 1986 ) (in the octahedral)
-// Hyperbolic in the other plane... (Abbo & Lyamin, Sloan, Hambleton )
 namespace Kratos
 {
 
@@ -76,13 +75,13 @@ MCYieldCriterion::~MCYieldCriterion()
 //************************* CALCULATE YIELD FUNCTION  ******************
 //**********************************************************************
 
-double& MCYieldCriterion::CalculateYieldCondition(double& rStateFunction, const Vector& rStressVector, const double& rAlpha)
+double& MCYieldCriterion::CalculateYieldCondition(double& rStateFunction, const Vector& rStressVector, const double& rCohesion, const double& rFrictionAngle)
 {
-    const double Cohesion = this->GetHardeningLaw().GetProperties()[COHESION];
-    const double FrictionAngle = this->GetHardeningLaw().GetProperties()[INTERNAL_FRICTION_ANGLE];
+    double Cohesion      = rCohesion;
+    double FrictionAngle = rFrictionAngle;
 
     const double FrictionCoefficient = (1 + std::sin(FrictionAngle))/(1 - std::sin(FrictionAngle));
-    const double CohesionCoefficient = 2 * Cohesion * sqrt(FrictionCoefficient);
+    const double CohesionCoefficient = 2 * Cohesion * std::sqrt(FrictionCoefficient);
 
     // f = k*s1 -s3 - comp
     rStateFunction = FrictionCoefficient * rStressVector(0) - rStressVector(2) - CohesionCoefficient;
@@ -90,19 +89,10 @@ double& MCYieldCriterion::CalculateYieldCondition(double& rStateFunction, const 
     return rStateFunction;
 }
 
-double MCYieldCriterion::GetSmoothingLodeAngle()
-{
-    return 29.0*GetPI()/180.0;
-}
 
 double MCYieldCriterion::GetPI()
 {
     return std::atan(1.0)*4.0;
-}
-
-double MCYieldCriterion::GetSmoothingHiperbolic()
-{
-    return 2.0;
 }
 
 void MCYieldCriterion::save( Serializer& rSerializer ) const
