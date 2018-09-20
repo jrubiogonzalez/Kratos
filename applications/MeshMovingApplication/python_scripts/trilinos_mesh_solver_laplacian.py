@@ -27,7 +27,8 @@ class TrilinosMeshSolverComponentwise(trilinos_mesh_solver_base.TrilinosMeshSolv
 
     def _create_mesh_motion_solving_strategy(self):
         linear_solver = self.get_linear_solver()
-        time_order = self.settings["time_order"].GetInt()
+        time_scheme = self.settings["time_scheme"].GetString()
+        alpha = self.settings["alpha"].GetDouble()
         reform_dofs_each_step = self.settings["reform_dofs_each_step"].GetBool()
         compute_reactions = self.settings["compute_reactions"].GetBool()
         calculate_mesh_velocities = self.settings["calculate_mesh_velocities"].GetBool()
@@ -37,7 +38,8 @@ class TrilinosMeshSolverComponentwise(trilinos_mesh_solver_base.TrilinosMeshSolv
             communicator,
             self.mesh_model_part,
             linear_solver,
-            time_order,
+            time_scheme,
+            alpha,
             reform_dofs_each_step,
             compute_reactions,
             calculate_mesh_velocities,
