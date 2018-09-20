@@ -77,7 +77,8 @@ public:
    */
   StructuralMeshMovingStrategy(ModelPart &model_part,
                                typename TLinearSolver::Pointer pNewLinearSolver,
-                               int TimeOrder = 2,
+                               std::string& rTimeScheme,
+                               double Alpha,
                                bool ReformDofSetAtEachStep = false,
                                bool ComputeReactions = false,
                                bool CalculateMeshVelocities = true,
@@ -89,7 +90,8 @@ public:
     mcompute_reactions = ComputeReactions;
     mcalculate_mesh_velocities = CalculateMeshVelocities;
     mecho_level = EchoLevel;
-    mtime_order = TimeOrder;
+    mTimeScheme = rTimeScheme;
+    mAlpha = Alpha;
     bool calculate_norm_dx_flag = false;
 
     typename SchemeType::Pointer pscheme = typename SchemeType::Pointer(
@@ -135,8 +137,8 @@ public:
         BaseType::GetModelPart().GetProcessInfo()[DELTA_TIME];
 
     if (mcalculate_mesh_velocities == true)
-        MoveMeshUtilities::CalculateMeshVelocities(mpmesh_model_part.get(), mtime_order,
-                                                   delta_time);
+        MoveMeshUtilities::CalculateMeshVelocities(mpmesh_model_part.get(), mTimeScheme, mAlpha, delta_time);
+
     MoveMeshUtilities::MoveMesh(
         mpmesh_model_part->GetCommunicator().LocalMesh().Nodes());
 
@@ -220,7 +222,8 @@ private:
   typename TBuilderAndSolverType::Pointer mpbulider_and_solver;
 
   int mecho_level;
-  int mtime_order;
+  std::string mTimeScheme;
+  double mAlpha;
   bool mreform_dof_set_at_each_step;
   bool mcompute_reactions;
   bool mcalculate_mesh_velocities;
