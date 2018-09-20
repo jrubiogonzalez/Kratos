@@ -13,6 +13,7 @@
         "solver_type"                 : "Monolithic",
         "ale_settings"                : {
             "solver_type"         : "mesh_solver_structural_similarity",
+            "time_scheme"         : "bdf2",
             "ale_interface_parts" : [
                 [
                     "AutomaticInlet2D_inlet",
