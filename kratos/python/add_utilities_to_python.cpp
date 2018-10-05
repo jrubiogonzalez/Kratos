@@ -55,6 +55,7 @@
 #include "utilities/sub_model_parts_list_utility.h"
 #include "utilities/merge_variable_lists_utility.h"
 #include "utilities/variable_redistribution_utility.h"
+#include "utilities/dummy_conditions_creation_utility.h"
 
 namespace Kratos
 {
@@ -570,6 +571,12 @@ void AddUtilitiesToPython(pybind11::module& m)
     .def("ComputeNodesMeanNormalModelPart",&MortarUtilities::ComputeNodesMeanNormalModelPart)
     .def("InvertNormal",&MortarUtilities::InvertNormal<PointerVectorSet<Element, IndexedObject>>)
     .def("InvertNormal",&MortarUtilities::InvertNormal<PointerVectorSet<Condition, IndexedObject>>)
+    ;
+
+    // Dummy cond
+    class_<DummyConditionsCreationUtility, typename DummyConditionsCreationUtility::Pointer>(m, "MortarUtilities")
+    .def(init<>())
+    .def("CreateConstraints",&DummyConditionsCreationUtility::CreateConstraints)
     ;
 
     // Read materials utility
