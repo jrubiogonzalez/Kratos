@@ -43,13 +43,13 @@ class TestDummyDofCondition(KratosUnittest.TestCase):
         normal[1] = 0.0
         normal[2] = 1.0
         tangent_xi = KratosMultiphysics.Vector(3)
-        normal[0] = 1.0
-        normal[1] = 0.0
-        normal[2] = 0.0
+        tangent_xi[0] = 1.0
+        tangent_xi[1] = 0.0
+        tangent_xi[2] = 0.0
         tangent_eta = KratosMultiphysics.Vector(3)
-        normal[0] = 0.0
-        normal[1] = 1.0
-        normal[2] = 0.0
+        tangent_eta[0] = 0.0
+        tangent_eta[1] = 1.0
+        tangent_eta[2] = 0.0
         for node in model_part.GetSubModelPart("DISPLACEMENT_Displacement_Auto2").Nodes:
             node.SetSolutionStepValue(KratosMultiphysics.NORMAL, normal)
             node.SetSolutionStepValue(KratosMultiphysics.TANGENT_XI, tangent_xi)
@@ -96,17 +96,10 @@ class TestDummyDofCondition(KratosUnittest.TestCase):
         # DEBUG
         self._post_process(model_part)
 
-        #for node in model_part.GetSubModelPart("Skin_Part").Nodes:
-            #normal = []
-            #norm = math.sqrt(node.X**2+node.Y**2+node.Z**2)
-            #normal.append(node.X/norm)
-            #normal.append(node.Y/norm)
-            #normal.append(node.Z/norm)
-
-            #solution_normal = node.GetSolutionStepValue(KratosMultiphysics.NORMAL)
-
-            #residual = math.sqrt((solution_normal[0]-normal[0])**2+(solution_normal[1]-normal[1])**2+(solution_normal[2]-normal[2])**2)
-            #self.assertLess(residual, 0.1)
+        for node in model_part.GetSubModelPart("DISPLACEMENT_Displacement_Auto2").Nodes:
+            disp = node.GetSolutionStepValue(KratosMultiphysics.DISPLACEMENT)
+            self.assertGreater(disp[0], 0.0)
+            self.assertGreater(disp[1], 0.0)
 
     def _post_process(self, model_part):
         from gid_output_process import GiDOutputProcess
