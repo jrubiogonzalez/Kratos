@@ -574,7 +574,7 @@ void AddUtilitiesToPython(pybind11::module& m)
     ;
 
     // Dummy cond
-    class_<DummyConditionsCreationUtility, typename DummyConditionsCreationUtility::Pointer>(m, "MortarUtilities")
+    class_<DummyConditionsCreationUtility, typename DummyConditionsCreationUtility::Pointer>(m, "DummyConditionsCreationUtility")
     .def(init<>())
     .def("CreateConstraints",&DummyConditionsCreationUtility::CreateConstraints)
     ;
