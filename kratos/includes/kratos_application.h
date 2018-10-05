@@ -25,6 +25,7 @@
 #include "elements/mesh_element.h"
 #include "includes/condition.h"
 #include "conditions/mesh_condition.h"
+#include "conditions/dummy_dof_condition.h"
 #include "includes/periodic_condition.h"
 #include "utilities/quaternion.h"
 #include "includes/master_slave_constraint.h"
@@ -359,6 +360,8 @@ class KRATOS_API(KRATOS_CORE) KratosApplication {
     // Point conditions
     const MeshCondition mPointCondition2D1N;
     const MeshCondition mPointCondition3D1N;
+    const DummyDofCondition mDummyDofCondition2D1N;
+    const DummyDofCondition mDummyDofCondition3D1N;
     // Line conditions
     const MeshCondition mLineCondition2D2N;
     const MeshCondition mLineCondition2D3N;

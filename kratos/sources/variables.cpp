@@ -487,6 +487,8 @@ KratosApplication::KratosApplication(const std::string ApplicationName)
       // Point conditions
       mPointCondition2D1N( 0, GeometryType::Pointer(new Point2D<NodeType >(GeometryType::PointsArrayType(1)))),
       mPointCondition3D1N( 0, GeometryType::Pointer(new Point3D<NodeType >(GeometryType::PointsArrayType(1)))),
+      mDummyDofCondition2D1N( 0, GeometryType::Pointer(new Point2D<NodeType >(GeometryType::PointsArrayType(1)))),
+      mDummyDofCondition3D1N( 0, GeometryType::Pointer(new Point3D<NodeType >(GeometryType::PointsArrayType(1)))),
       // Line conditions
       mLineCondition2D2N( 0, GeometryType::Pointer(new Line2D2<NodeType >(GeometryType::PointsArrayType(2)))),
       mLineCondition2D3N( 0, GeometryType::Pointer(new Line2D3<NodeType >(GeometryType::PointsArrayType(3)))),
@@ -1008,6 +1010,8 @@ void KratosApplication::RegisterVariables() {
     //point conditions
     KRATOS_REGISTER_CONDITION("PointCondition2D1N", mPointCondition2D1N);
     KRATOS_REGISTER_CONDITION("PointCondition3D1N", mPointCondition3D1N);
+    KRATOS_REGISTER_CONDITION("DummyDofCondition2D1N", mDummyDofCondition2D1N);
+    KRATOS_REGISTER_CONDITION("DummyDofCondition3D1N", mDummyDofCondition3D1N);
     //line conditions
     KRATOS_REGISTER_CONDITION("LineCondition2D2N", mLineCondition2D2N);
     KRATOS_REGISTER_CONDITION("LineCondition2D3N", mLineCondition2D3N);
