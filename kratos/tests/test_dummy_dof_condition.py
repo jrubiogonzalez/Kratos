@@ -23,6 +23,7 @@ class TestDummyDofCondition(KratosUnittest.TestCase):
         model_part.AddNodalSolutionStepVariable(KratosMultiphysics.TANGENT_XI)
         model_part.AddNodalSolutionStepVariable(KratosMultiphysics.TANGENT_ETA)
         model_part_io = KratosMultiphysics.ModelPartIO(GetFilePath("test_dummy_dof_condition"))
+        #model_part_io = KratosMultiphysics.ModelPartIO(GetFilePath("test_dummy_dof_condition_multiple_elements"))
         model_part_io.ReadModelPart(model_part)
         model.AddModelPart(model_part)
 
@@ -43,17 +44,18 @@ class TestDummyDofCondition(KratosUnittest.TestCase):
         normal[1] = 0.0
         normal[2] = 1.0
         tangent_xi = KratosMultiphysics.Vector(3)
-        normal[0] = 1.0
-        normal[1] = 0.0
-        normal[2] = 0.0
+        tangent_xi[0] = 1.0
+        tangent_xi[1] = 0.0
+        tangent_xi[2] = 0.0
         tangent_eta = KratosMultiphysics.Vector(3)
-        normal[0] = 0.0
-        normal[1] = 1.0
-        normal[2] = 0.0
+        tangent_eta[0] = 0.0
+        tangent_eta[1] = 1.0
+        tangent_eta[2] = 0.0
         for node in model_part.GetSubModelPart("DISPLACEMENT_Displacement_Auto2").Nodes:
             node.SetSolutionStepValue(KratosMultiphysics.NORMAL, normal)
             node.SetSolutionStepValue(KratosMultiphysics.TANGENT_XI, tangent_xi)
             node.SetSolutionStepValue(KratosMultiphysics.TANGENT_ETA, tangent_eta)
+            node.Set(KratosMultiphysics.SLAVE)
 
         # Set delta disp
         delta_disp = KratosMultiphysics.Vector(3)
